@@ -2,226 +2,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="stylesheet.css" rel="stylesheet">
-  <title>Shadows on you break, out into the light</title>
+  <title>Їбейший перекладач</title>
 </head>
 
 <body class="bg-[#222222] h-screen w-screen flex flex-col items-center"> <!-- place-content-center -->
 
   <h1 class="text-[#c9c4f8] text-3xl font-bold underline">
-    Whatever translator 
+    Їбейший перекладач
   </h1>
 
-  <div class="grid grid-cols-2 grid-rows-1 w-[1200px] mt-10 font-sans font-semibold text-center half:grid-cols-2 half:w-screen half:px-5">
+  <div>
+    <select id="dictionaries" onchange="loadDictionary(this.value)">
+    </select>
 
-    <div class="relative inline-block dropdown z-10">
+    <button onclick="openNewDictionary()">Новий словник</button>
 
-      <button class="inline-flex justify-center bg-[#2a2a2a] w-full h-full p-3 rounded-tl-lg border-b border-[#444444] hover:bg-[#333333] focus:bg-[#333333]  font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none active:bg-[#333333]" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-        <span>Select Input Language</span>
-      </button>
+    <button onclick="openEditor()">Редагувати</button>
+  </div>
 
-      <div class="opacity-0 invisible dropdown-menu transition-all duration-300 ">
-
-        <div class="absolute transform origin-top-left w-[1200px]  bg-[#2a2a2a] rounded-b-lg border-t border-[#c9c4f8]  shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
-      
-          <ul class="mx-auto grid w-[1200px] grid-cols-2 mt-2">
-            <li class="">
-              <input class="peer sr-only" type="radio" value="yes" name="answer" id="input" checked />
-              <label class="flex justify-center cursor-pointer bg-[#2a2a2a] py-2 px-4 text-white/80 hover:text-white focus:outline-none peer-checked:text-[#c9c4f8] transition-all duration-500 ease-in-out" for="input">Languages</label>
-          
-              <div class="grid grid-cols-6 p-2 pl-0 rounded-lg w-[1200px] mx-auto transition-all duration-500 ease-in-out translate-x-10  opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                <a href="#" tabindex="0" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Arabic</a>
-                <a href="#" tabindex="1" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Bengali</a>
-                <a href="#" tabindex="2" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Bulgarian</a>
-                <a href="#" tabindex="3" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Catalan</a>
-                <a href="#" tabindex="4" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Chinese</a>
-                <a href="#" tabindex="5" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Czech</a>
-                <a href="#" tabindex="6" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Danish</a>
-                <a href="#" tabindex="7" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Dutch</a>
-                <a href="#" tabindex="8" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >English</a>
-                <a href="#" tabindex="9" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Finnish</a>
-                <a href="#" tabindex="10" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >French</a>
-                <a href="#" tabindex="11" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >German</a>
-                <a href="#" tabindex="12" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Greek</a>
-                <a href="#" tabindex="13" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hebrew</a>
-                <a href="#" tabindex="14" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hindi</a>
-                <a href="#" tabindex="15" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hungarian</a>
-                <a href="#" tabindex="16" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Indonesian</a>
-                <a href="#" tabindex="17" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Italian</a>
-                <a href="#" tabindex="18" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Japanese</a>
-                <a href="#" tabindex="19" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Korean</a>
-                <a href="#" tabindex="20" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Lithuanian</a>
-                <a href="#" tabindex="21" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Norwegian</a>
-                <a href="#" tabindex="22" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Polish</a>
-                <a href="#" tabindex="23" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Portuguese</a>
-                <a href="#" tabindex="24" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Romanian</a>
-                <a href="#" tabindex="25" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Russian</a>
-                <a href="#" tabindex="26" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Slovak</a>
-                <a href="#" tabindex="27" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Spanish</a>
-                <a href="#" tabindex="28" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Swedish</a>
-                <a href="#" tabindex="29" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Thai</a>
-                <a href="#" tabindex="30" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Turkish</a>
-                <a href="#" tabindex="31" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Urdu</a>
-                <a href="#" tabindex="32" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Vietnamese</a>
-              </div>
-            </li>
-
-            <li class="">
-              <input class="peer sr-only" type="radio" value="no" name="answer" id="output" />
-              <label class="flex justify-center cursor-pointer bg-[#2a2a2a] py-2 px-4 text-white/80 hover:text-white focus:outline-none peer-checked:text-[#c9c4f8] transition-all duration-500 ease-in-out" for="output">Customization</label>
-
-              <button class="-ml-[603px] flex justify-start items-center px-4 py-2 rounded-xl leading-5 hover:bg-[#333333] transition-all duration-500 ease-in-out translate-x-10 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                <span class="mb-0.5">Add</span>
-                <svg class="ml-1 h-5 w-5" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
-                    fill="currentColor" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
-                    fill="currentColor" />
-                </svg>
-              </button>
-
-              <div class="grid grid-cols-6 items-center p-2 pl-0 rounded-lg w-[1200px] -ml-[592px] transition-all duration-500 ease-in-out -translate-x-10 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:-translate-x-1">
-                <a href="#" tabindex="0" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Pluh = the plug</a>
-                <a href="#" tabindex="1" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Motion = the money / the amount of bitches</a>
-                <a href="#" tabindex="2" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Type shit = you feel me</a>
-                <a href="#" tabindex="3" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >cuh = cousin</a>
-                <a href="#" tabindex="4" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >💀 = lmao</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative inline-block dropdown z-10">
-      <button class="inline-flex justify-center bg-[#2a2a2a] w-full h-full p-3 rounded-tr-lg border-b border-[#444444] hover:bg-[#333333] focus:bg-[#333333]  font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none active:bg-[#333333]" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-        <span>Select Output Language</span>
-      </button>
-
-      <div class="opacity-0 invisible dropdown-menu transition-all duration-300">
-
-        <div class="absolute  w-[1200px] right-0  bg-[#2a2a2a] rounded-b-lg border-t border-[#c9c4f8]  shadow-lg outline-none" aria-labelledby="headlessui-menu-button-" id="headlessui-menu-items-117" role="menu">
-      
-          <ul class="mx-auto grid w-[1200px] grid-cols-2 gap-x-5 mt-2">
-            <li class="">
-              <input class="peer sr-only" type="radio" value="yes" name="answer1" id="input-1" checked />
-              <label class="flex justify-center cursor-pointer bg-[#2a2a2a] py-2 px-4 text-white/80 hover:text-white focus:outline-none peer-checked:text-[#c9c4f8] transition-all duration-500 ease-in-out" for="input-1">Languages</label>
-          
-              <div class="grid grid-cols-6 p-2 pl-0 rounded-lg w-[1200px] mx-auto transition-all duration-500 ease-in-out translate-x-10 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                <a href="#" tabindex="0" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Arabic</a>
-                <a href="#" tabindex="1" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Bengali</a>
-                <a href="#" tabindex="2" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Bulgarian</a>
-                <a href="#" tabindex="3" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Catalan</a>
-                <a href="#" tabindex="4" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Chinese</a>
-                <a href="#" tabindex="5" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Czech</a>
-                <a href="#" tabindex="6" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Danish</a>
-                <a href="#" tabindex="7" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Dutch</a>
-                <a href="#" tabindex="8" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >English</a>
-                <a href="#" tabindex="9" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Finnish</a>
-                <a href="#" tabindex="10" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >French</a>
-                <a href="#" tabindex="11" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >German</a>
-                <a href="#" tabindex="12" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Greek</a>
-                <a href="#" tabindex="13" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hebrew</a>
-                <a href="#" tabindex="14" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hindi</a>
-                <a href="#" tabindex="15" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Hungarian</a>
-                <a href="#" tabindex="16" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Indonesian</a>
-                <a href="#" tabindex="17" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Italian</a>
-                <a href="#" tabindex="18" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Japanese</a>
-                <a href="#" tabindex="19" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Korean</a>
-                <a href="#" tabindex="20" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Lithuanian</a>
-                <a href="#" tabindex="21" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Norwegian</a>
-                <a href="#" tabindex="22" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Polish</a>
-                <a href="#" tabindex="23" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Portuguese</a>
-                <a href="#" tabindex="24" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Romanian</a>
-                <a href="#" tabindex="25" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Russian</a>
-                <a href="#" tabindex="26" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Slovak</a>
-                <a href="#" tabindex="27" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Spanish</a>
-                <a href="#" tabindex="28" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Swedish</a>
-                <a href="#" tabindex="29" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Thai</a>
-                <a href="#" tabindex="30" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Turkish</a>
-                <a href="#" tabindex="31" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Urdu</a>
-                <a href="#" tabindex="32" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Vietnamese</a>
-              </div>
-            </li>
-          
-            <li class="">
-              <input class="peer sr-only" type="radio" value="no" name="answer1" id="output-1" />
-              <label class="flex justify-center cursor-pointer bg-[#2a2a2a] py-2 px-4 text-white/80 hover:text-white focus:outline-none peer-checked:text-[#c9c4f8] transition-all duration-500 ease-in-out" for="output-1">Customization</label>
-
-              <button class="-ml-[603px] flex justify-start items-center px-4 py-2 rounded-xl leading-5 hover:bg-[#333333] transition-all duration-500 ease-in-out translate-x-10 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-                <span class="mb-0.5">Add</span>
-                <svg class="ml-1 h-5 w-5" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
-                    fill="currentColor" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z"
-                    fill="currentColor" />
-                </svg>
-              </button>
-          
-              <div class="grid grid-cols-6 items-center p-2 pl-0 rounded-lg w-[1200px] -ml-[603px] transition-all duration-500 ease-in-out -translate-x-10 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:-translate-x-1">
-                <a href="#" tabindex="0" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Pluh = the plug</a>
-                <a href="#" tabindex="1" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Motion = the money / the amount of bitches</a>
-                <a href="#" tabindex="2" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >Type shit = you feel me</a>
-                <a href="#" tabindex="3" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >cuh = cousin</a>
-                <a href="#" tabindex="4" class="px-4 py-2 rounded-xl leading-5 hover:bg-[#333333]" role="menuitem" >💀 = lmao</a>
-                
-              </div>
-            </li>
-          </ul>
-
-        </div>
-
-      </div>
-
-    </div>
-  
-    
-  </div>   
+  <h1 id="current-dictionary">
+    None
+  </h1>
 
   <div class="relative grid grid-cols-2 grid-rows-1 w-[1200px] h-[200px] font-sans half:grid-cols-1 half:grid-rows-2 half:w-screen half:px-5 game">
-    <textarea class="bg-[#2a2a2a] p-4 text-xl rounded-bl-lg resize-none focus:outline-none half:rounded-none" placeholder="Start typing anything ☺️"></textarea>
+    <textarea class="bg-[#2a2a2a] p-4 text-xl rounded-bl-lg resize-none focus:outline-none half:rounded-none" placeholder="Уведіть будь що ☺️" onkeyup="process(this.value)"></textarea>
   
-    <textarea class="bg-[#3a3a3a] p-4 text-xl rounded-br-lg resize-none focus:outline-none half:rounded-lg half:rounded-t-none" disabled></textarea>
+    <textarea id="result" class="bg-[#5a5a5a] p-4 text-xl rounded-br-lg resize-none focus:outline-none half:rounded-lg half:rounded-t-none text-white" disabled></textarea>
   
-    <button class="absolute top-2 right-2 p-2 hover:bg-[#2a2a2a] rounded-lg half:top-28 half:right-7">
-      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="9.37 9.37 486.63 486.63">
+    <button class="absolute top-2 right-2 p-2 hover:bg-[#2a2a2a] rounded-lg half:top-28 half:right-7" onclick="copy(result.value)">
+      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="9.37 9.37 486.63 486.63">
         <rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
         <path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
       </svg>
     </button>
   </div>
-  
-  <!-- component
-  <ul class="mx-auto grid max-w-full w-full grid-cols-3 gap-x-5 px-8">
-    <li class="">
-      <input class="peer sr-only" type="radio" value="yes" name="answer" id="yes" checked />
-      <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-[#2a2a2a] py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out" for="yes">Details</label>
-  
-          <div class="absolute bg-[#2a2a2a] shadow-lg left-0 p-6 border mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
-      </div>
-    </li>
-  
-    <li class="">
-      <input class="peer sr-only" type="radio" value="no" name="answer" id="no" />
-      <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-[#2a2a2a] py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out" for="no">About</label>
-  
-          <div class="absolute bg-[#2a2a2a] shadow-lg left-0 p-6 border mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
-      </div>
-    </li>
-  
-    <li class="">
-      <input class="peer sr-only" type="radio" value="yesno" name="answer" id="yesno" />
-      <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-[#2a2a2a] py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out " for="yesno">Something</label>
-  
-          <div class="absolute bg-[#2a2a2a] shadow-lg left-0 p-6 border mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
-      </div>
-    </li>
-  </ul> -->
-  
 </body>
+
+<script>
+  const result = document.getElementById('result');
+  const dictionaries = document.getElementById('dictionaries');
+
+  function addDictionaryOption(name) {
+    const option = document.createElement('option');
+    option.value = name;
+    option.innerText = name;
+    dictionaries.add(option);
+  }
+</script>
