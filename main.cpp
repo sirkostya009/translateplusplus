@@ -63,9 +63,43 @@ public:
         }
         ss << '`';
 
-        std::cout << ss.str() << std::endl;
-
         caller->EvaluateScript(ss.str().c_str());
+    }
+};
+
+class Info : public ul::WindowListener, public ul::LoadListener, public ul::ViewListener {
+    ul::RefPtr<ul::Window> window;
+    ul::RefPtr<ul::Overlay> overlay;
+
+    std::function<void()> onClose;
+public:
+    Info(ul::Monitor* monitor, std::function<void()> onClose)
+    : window{ ul::Window::Create(monitor, 450, 450, false, ul::kWindowFlags_Resizable | ul::kWindowFlags_Maximizable) }
+    , overlay{ ul::Overlay::Create(window, 1, 1, 0, 0) }
+    , onClose{ std::move(onClose) }
+    {
+        window->set_listener(this);
+        overlay->view()->set_load_listener(this);
+        overlay->view()->set_view_listener(this);
+
+        window->MoveToCenter();
+        overlay->Resize(window->width(), window->height());
+        overlay->view()->LoadURL("file:///info.html");
+        overlay->Focus();
+    }
+
+    void OnClose(ul::Window *w) override {
+        w->Close();
+        onClose();
+    }
+
+    bool OnKeyEvent(const ul::KeyEvent &evt) override {
+        switch (evt.virtual_key_code) {
+            case 27: // Escape
+                OnClose(window.get());
+                break;
+        }
+        return true;
     }
 };
 
@@ -104,6 +138,9 @@ class App : public ul::AppListener, public ul::WindowListener, public ul::LoadLi
 
     Editor* editor{};
     bool rizz = false;
+
+    Info* info_ptr{};
+    bool rizza = false;
 public:
     App()
     : app{ ul::App::Create() }
@@ -119,6 +156,10 @@ public:
         overlay->Resize(window->width(), window->height());
         overlay->view()->LoadURL("file:///app.html");
         overlay->Focus();
+
+        if (auto fs = std::ifstream("config.json"); fs) {
+            fs >> config;
+        }
     }
 
     inline void run() {
@@ -131,11 +172,17 @@ public:
             rizz = false;
             delete editor;
         }
+
+        if (rizza) {
+            delete info_ptr;
+            rizza = false;
+        }
     }
 
     bool OnKeyEvent(const ul::KeyEvent &evt) override {
         switch (evt.virtual_key_code) {
         case 112: // F1
+            info_ptr = new Info(app->main_monitor(), [this] { rizza = true; });
             break;
         case 13: // Enter
             ul::JSEval("process(input.value)");
@@ -145,6 +192,10 @@ public:
     }
 
     void OnClose(ul::Window*) override {
+        if (auto fs = std::ofstream("config.json"); fs) {
+            fs << config;
+        }
+
         std::exit(0);
     }
 
@@ -164,6 +215,9 @@ public:
         global["copy"]              = BindJSCallback(&App::copy);
 
         addDictionaryOption = global["addDictionaryOption"];
+        for (auto& file : config["dictionaries"]) {
+            addDictionaryOption({file.get<std::string>().c_str()});
+        }
     }
 
     void OnChangeCursor(ul::View *caller, ul::Cursor cursor) override {
@@ -206,13 +260,35 @@ public:
     }
 
     void copy(const ul::JSObject&, const ul::JSArgs& args) {
-        auto text = ((ul::String) args[0]).utf8().data();
+        auto text = ((ul::String) args[0]).utf8();
+        auto hwnd = (HWND) window->native_handle();
+
+        OpenClipboard(hwnd);
+        EmptyClipboard();
+        auto hg = GlobalAlloc(GMEM_MOVEABLE, text.length() + 1);
+        if (!hg) {
+            CloseClipboard();
+            return;
+        }
+        memcpy(GlobalLock(hg), text.data(), text.length() + 1);
+        GlobalUnlock(hg);
+        SetClipboardData(CF_TEXT,hg);
+        CloseClipboard();
+        GlobalFree(hg);
     }
 
-    void loadDictionary(const ul::JSObject&, const ul::JSArgs&) {
+    void loadDictionary(const ul::JSObject&, const ul::JSArgs& args) {
+        auto file = ((ul::String) args[0]).utf8().data();
+
+        try {
+            dictionary = json::parse(std::ifstream(file));
+            config["file"] = file;
+        } catch (const std::exception& e) {
+            std::cerr << "Failed to load dictionary\n" << e.what() << std::endl;
+        }
     }
 
-    void openNewDictionary(const ul::JSObject& self, const ul::JSArgs& args) {
+    void openNewDictionary(const ul::JSObject&, const ul::JSArgs&) {
         IFileOpenDialog *dialog;
         auto hr = CoCreateInstance(
                 CLSID_FileOpenDialog,
@@ -254,6 +330,7 @@ public:
         try {
             dictionary = json::parse(std::ifstream(filePath));
             config["file"] = filePath;
+            config["dictionaries"] += filePath;
             char buffer[500];
             wcstombs(buffer, filePath, 500);
             addDictionaryOption({buffer});
@@ -262,7 +339,7 @@ public:
         }
     }
 
-    void openEditor(const ul::JSObject&, const ul::JSArgs& args) {
+    void openEditor(const ul::JSObject&, const ul::JSArgs&) {
         editor = new Editor(app->main_monitor(),
                             [this] { rizz = true; },
                             config["file"]);
