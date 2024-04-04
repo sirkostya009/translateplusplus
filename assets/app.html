@@ -18,6 +18,8 @@
     <button onclick="openNewDictionary()">Новий словник</button>
 
     <button onclick="openEditor()">Редагувати</button>
+
+    <button onclick="translateFile()">Translate file</button>
   </div>
 
   <h1 id="current-dictionary">
@@ -26,9 +28,9 @@
 
   <div class="relative grid grid-cols-2 grid-rows-1 w-[1200px] h-[200px] font-sans half:grid-cols-1 half:grid-rows-2 half:w-screen half:px-5 game">
     <textarea class="bg-[#2a2a2a] p-4 text-xl rounded-bl-lg resize-none focus:outline-none half:rounded-none" placeholder="Уведіть будь що ☺️" onkeyup="process(this.value)"></textarea>
-  
+
     <textarea id="result" class="bg-[#5a5a5a] p-4 text-xl rounded-br-lg resize-none focus:outline-none half:rounded-lg half:rounded-t-none text-white" disabled></textarea>
-  
+
     <button class="absolute top-2 right-2 p-2 hover:bg-[#2a2a2a] rounded-lg half:top-28 half:right-7" onclick="copy(result.value)">
       <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="9.37 9.37 486.63 486.63">
         <rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />

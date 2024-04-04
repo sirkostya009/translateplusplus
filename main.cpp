@@ -210,13 +210,14 @@ public:
 
         global["openNewDictionary"] = BindJSCallback(&App::openNewDictionary);
         global["loadDictionary"]    = BindJSCallback(&App::loadDictionary);
+        global["translateFile"]     = BindJSCallback(&App::translateFile);
         global["openEditor"]        = BindJSCallback(&App::openEditor);
         global["process"]           = BindJSCallback(&App::process);
         global["copy"]              = BindJSCallback(&App::copy);
 
         addDictionaryOption = global["addDictionaryOption"];
         for (auto& file : config["dictionaries"]) {
-            addDictionaryOption({file.get<std::string>().c_str()});
+            addDictionaryOption({((std::string)file).c_str()});
         }
     }
 
@@ -231,6 +232,47 @@ public:
     void OnAddConsoleMessage(ul::View*, ul::MessageSource, ul::MessageLevel, const ul::String &message,
                              uint32_t line_number, uint32_t column_number, const ul::String &) override {
         std::cout << "Console: " << message.utf8().data() << " at line: " << line_number << ", column: " << column_number << std::endl;
+    }
+
+    LPWSTR openFile(size_t filterSize, COMDLG_FILTERSPEC* filters) {
+        IFileOpenDialog *dialog;
+        auto hr = CoCreateInstance(
+                CLSID_FileOpenDialog,
+                nullptr,
+                CLSCTX_ALL,
+                IID_IFileOpenDialog,
+                reinterpret_cast<LPVOID*>(&dialog)
+        );
+        if (FAILED(hr)) {
+            return nullptr;
+        }
+
+        auto handle = (HWND) window->native_handle();
+
+        dialog->SetFileTypes(filterSize, filters);
+
+        hr = dialog->Show(handle);
+        if (FAILED(hr)) {
+            return nullptr;
+        }
+
+        IShellItem *item;
+        hr = dialog->GetResult(&item);
+        if (FAILED(hr)) {
+            return nullptr;
+        }
+
+        LPWSTR filePath;
+        hr = item->GetDisplayName(SIGDN_FILESYSPATH, &filePath);
+        if (FAILED(hr)) {
+            return nullptr;
+        }
+
+        item->Release();
+        dialog->Release();
+        CoTaskMemFree(filePath);
+
+        return filePath;
     }
 
     void process(const ul::JSObject&, const ul::JSArgs& args) {
@@ -257,6 +299,34 @@ public:
         }
 
         ul::JSEval(("result.value = `" + result + '`').c_str());
+    }
+
+    void translateFile(const ul::JSObject&, const ul::JSArgs& args) {
+        auto filter = COMDLG_FILTERSPEC{L"Text Files", L"*.txt"};
+        auto filePath = openFile(1, &filter);
+
+        auto in = std::ifstream(filePath);
+
+        filePath = openFile(1, &filter);
+
+        auto out = std::ofstream(filePath);
+
+        auto line = std::string();
+        while (std::getline(in, line)) {
+            auto result = std::string();
+            for (auto match = std::smatch(); std::regex_search(line, match, word_regex); line = match.suffix()) {
+                auto word = match.str();
+
+                result += (dictionary.find(word) != dictionary.end() ? dictionary[word] : word);
+
+                if (result[result.size() - 1] != '\r'
+                 || result[result.size() - 1] != '\t'
+                 || result[result.size() - 1] != ' ') {
+                    result += ' ';
+                }
+            }
+            out << result << '\n';
+        }
     }
 
     void copy(const ul::JSObject&, const ul::JSArgs& args) {
@@ -289,43 +359,8 @@ public:
     }
 
     void openNewDictionary(const ul::JSObject&, const ul::JSArgs&) {
-        IFileOpenDialog *dialog;
-        auto hr = CoCreateInstance(
-                CLSID_FileOpenDialog,
-                nullptr,
-                CLSCTX_ALL,
-                IID_IFileOpenDialog,
-                reinterpret_cast<LPVOID*>(&dialog)
-        );
-        if (FAILED(hr)) {
-            return;
-        }
-
-        auto handle = (HWND) window->native_handle();
-
-        auto jsonFilter = COMDLG_FILTERSPEC{L"JSON Files", L"*.json"};
-        dialog->SetFileTypes(1, &jsonFilter);
-
-        hr = dialog->Show(handle);
-        if (FAILED(hr)) {
-            return;
-        }
-
-        IShellItem *item;
-        hr = dialog->GetResult(&item);
-        if (FAILED(hr)) {
-            return;
-        }
-
-        LPWSTR filePath;
-        hr = item->GetDisplayName(SIGDN_FILESYSPATH, &filePath);
-        if (FAILED(hr)) {
-            return;
-        }
-
-        CoTaskMemFree(filePath);
-        item->Release();
-        dialog->Release();
+        auto filter = COMDLG_FILTERSPEC{L"JSON Files", L"*.json"};
+        auto filePath = openFile(1, &filter);
 
         try {
             dictionary = json::parse(std::ifstream(filePath));
