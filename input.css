@@ -19,6 +19,6 @@ body {
     clip: rect(0, 0, 0, 0);
 }
 
-#dictionaries:active + #arrow-icon {
+#dictionaries:focus + #arrow-icon {
     transform: rotate(90deg);
 }
