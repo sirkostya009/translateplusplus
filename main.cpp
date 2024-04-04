@@ -159,6 +159,8 @@ public:
 
         if (auto fs = std::ifstream("config.json"); fs) {
             fs >> config;
+
+            dictionary = json::parse(std::ifstream(std::string(config["file"])));
         }
     }
 
