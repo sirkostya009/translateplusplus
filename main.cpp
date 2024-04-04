@@ -304,10 +304,16 @@ public:
     void translateFile(const ul::JSObject&, const ul::JSArgs& args) {
         auto filter = COMDLG_FILTERSPEC{L"Text Files", L"*.txt"};
         auto filePath = openFile(1, &filter);
+        if (!filePath) {
+            return;
+        }
 
         auto in = std::ifstream(filePath);
 
         filePath = openFile(1, &filter);
+        if (!filePath) {
+            return;
+        }
 
         auto out = std::ofstream(filePath);
 
@@ -361,6 +367,9 @@ public:
     void openNewDictionary(const ul::JSObject&, const ul::JSArgs&) {
         auto filter = COMDLG_FILTERSPEC{L"JSON Files", L"*.json"};
         auto filePath = openFile(1, &filter);
+        if (!filePath) {
+            return;
+        }
 
         try {
             dictionary = json::parse(std::ifstream(filePath));

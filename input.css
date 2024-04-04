@@ -18,3 +18,7 @@ body {
     scale: 0;
     clip: rect(0, 0, 0, 0);
 }
+
+#dictionaries:active + #arrow-icon {
+    transform: rotate(90deg);
+}
