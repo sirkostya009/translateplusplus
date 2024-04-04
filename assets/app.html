@@ -5,8 +5,7 @@
   <title>Їбейший перекладач</title>
 </head>
 
-<body class="bg-[#222222] h-screen w-screen flex flex-col items-center"> <!-- place-content-center -->
-
+<body class="bg-[#222222] h-screen w-screen flex flex-col items-center">
   <h1 class="text-[#c9c4f8] text-3xl font-bold underline mb-5">
     Їбейший перекладач
   </h1>
@@ -17,10 +16,8 @@
     </button>
 
     <div class="inline-flex items-center bg-[#222222] px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      <select id="dictionaries" onchange="loadDictionary(this.value)" class="appearance-none focus:outline-none">
-
-      </select>
-      <svg id="arrow-icon" class="w-4 h-4 ml-2 transition-all duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <select id="dictionaries" onchange="loadDictionary(this.value)" class="appearance-none focus:outline-none"></select>
+      <svg id="arrow-icon" class="w-4 h-4 ml-2 mt-1 transition-all duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
       </svg> 
     </div>
@@ -32,14 +29,27 @@
     <button onclick="translateFile()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
       Перекласти файл
     </button>
+
+    <button onclick="openInfo()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
+      Про застосунок
   </div>
 
   <div class="relative grid grid-cols-2 grid-rows-1 w-[1200px] h-[200px] font-sans mt-5 half:grid-cols-1 half:grid-rows-2 half:w-screen half:px-5 game">
-    <textarea class="bg-[#2a2a2a] p-4 text-xl rounded-l-xl resize-none focus:outline-none half:rounded-none" placeholder="Уведіть будь що ☺️" onkeyup="process(this.value)"></textarea>
-  
-    <textarea id="result" class="bg-[#5a5a5a] p-4 text-xl rounded-r-xl resize-none focus:outline-none half:rounded-lg half:rounded-t-none text-white" disabled></textarea>
-  
-    <button class="absolute top-2 right-2 p-2 hover:bg-[#2a2a2a] rounded-lg half:top-28 half:right-7" onclick="copy(result.value)">
+    <textarea class="bg-[#2a2a2a] p-4 text-xl rounded-l-xl resize-none focus:outline-none half:rounded-none half:rounded-t-lg"
+              placeholder="Уведіть будь що ☺️ رَبٍّ زِدْنٍي عِلمًا"
+              onkeyup="inputCounter.innerText = process(this.value)"
+              onkeydown="inputCounter.innerText = this.value.length"></textarea>
+
+    <span id="input-counter" class="character-counter -translate-x-[615px] bottom-2 font-semibold select-none half:bottom-[108px] half:-translate-x-[30px] "></span>
+
+    <textarea id="result"
+              class="bg-[#5a5a5a] p-4 text-xl rounded-r-xl resize-none focus:outline-none half:rounded-lg half:rounded-t-none text-white"
+              disabled
+              onchange="resultCounter.innerText = this.value.length"></textarea>
+
+    <span id="result-counter" class="character-counter -translate-x-[16px] bottom-2 font-semibold select-none half:-translate-x-[30px]"></span>
+
+    <button class="absolute top-2 right-2 p-2 hover:bg-[#3a3a3a] rounded-lg half:top-28 half:right-7" onclick="copy(result.value)">
       <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="9.37 9.37 486.63 486.63">
         <rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
         <path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -51,6 +61,8 @@
 <script>
   const result = document.getElementById('result');
   const dictionaries = document.getElementById('dictionaries');
+  const inputCounter = document.getElementById('input-counter');
+  const resultCounter = document.getElementById('result-counter');
 
   function addDictionaryOption(name) {
     const option = document.createElement('option');
@@ -58,5 +70,4 @@
     option.innerText = name.match(/.*[\/\\](.*)\.\w+$/)[1];
     dictionaries.add(option);
   }
-
 </script>

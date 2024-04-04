@@ -1,6 +1,5 @@
 #include <AppCore/AppCore.h>
 #include <iostream>
-#include <chrono>
 #include <map>
 #include <string>
 #include <regex>
@@ -108,8 +107,6 @@ class App : public ul::AppListener, public ul::WindowListener, public ul::LoadLi
     ul::RefPtr<ul::Window> window;
     ul::RefPtr<ul::Overlay> overlay;
 
-    std::chrono::milliseconds lastPush = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-
     struct ci_less {
         // case-independent (ci) compare_less binary function
         struct nocase_compare {
@@ -182,7 +179,7 @@ public:
     bool OnKeyEvent(const ul::KeyEvent &evt) override {
         switch (evt.virtual_key_code) {
         case 112: // F1
-            info_ptr = new Info(app->main_monitor(), [this] { rizza = true; });
+            openInfo({}, {});
             break;
         case 13: // Enter
             ul::JSEval("process(input.value)");
@@ -212,7 +209,8 @@ public:
         global["loadDictionary"]    = BindJSCallback(&App::loadDictionary);
         global["translateFile"]     = BindJSCallback(&App::translateFile);
         global["openEditor"]        = BindJSCallback(&App::openEditor);
-        global["process"]           = BindJSCallback(&App::process);
+        global["openInfo"]          = BindJSCallback(&App::openInfo);
+        global["process"]           = BindJSCallbackWithRetval(&App::process);
         global["copy"]              = BindJSCallback(&App::copy);
 
         addDictionaryOption = global["addDictionaryOption"];
@@ -275,13 +273,7 @@ public:
         return filePath;
     }
 
-    void process(const ul::JSObject&, const ul::JSArgs& args) {
-        auto now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-        if ((lastPush - now).count() > -500) {
-            return;
-        }
-        lastPush = now;
-
+    ul::JSValue process(const ul::JSObject&, const ul::JSArgs& args) {
         auto string = std::string(((ul::String) args[0]).utf8().data());
         auto result = std::string();
 
@@ -299,6 +291,7 @@ public:
         }
 
         ul::JSEval(("result.value = `" + result + '`').c_str());
+        return {((ul::String) args[0]).utf8().length()};
     }
 
     void translateFile(const ul::JSObject&, const ul::JSArgs& args) {
@@ -374,21 +367,23 @@ public:
         try {
             dictionary = json::parse(std::ifstream(filePath));
             config["file"] = filePath;
-            if (auto wstr = std::wstring(filePath); !config["dictionaries"].contains(std::string(wstr.begin(), wstr.end()))) {
+            auto wstr = std::wstring(filePath);
+            auto str = std::string(wstr.begin(), wstr.end());
+            if (!config["dictionaries"].contains(str)) {
                 config["dictionaries"] += filePath;
             }
-            char buffer[500];
-            wcstombs(buffer, filePath, 500);
-            addDictionaryOption({buffer});
+            addDictionaryOption({str.c_str()});
         } catch (const std::exception& e) {
             std::cerr << "Failed to load dictionary\n" << e.what() << std::endl;
         }
     }
 
     void openEditor(const ul::JSObject&, const ul::JSArgs&) {
-        editor = new Editor(app->main_monitor(),
-                            [this] { rizz = true; },
-                            config["file"]);
+        editor = new Editor(app->main_monitor(), [this] { rizz = true; }, config["file"]);
+    }
+
+    void openInfo(const ul::JSObject&, const ul::JSArgs&) {
+        info_ptr = new Info(app->main_monitor(), [this] { rizza = true; });
     }
 };
 
