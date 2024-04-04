@@ -6,19 +6,3 @@ body {
     color: #ffffff;
 }
 
-.dropdown:focus-within .dropdown-menu {
-    scale: 1;
-    clip: rect(0, 0, 0, 0);
-    opacity:1;
-    transform: translate(0) scale(1);
-    visibility: visible;
-}
-
-.dropdown-menu {
-    scale: 0;
-    clip: rect(0, 0, 0, 0);
-}
-
-#dictionaries:focus + #arrow-icon {
-    transform: rotate(90deg);
-}

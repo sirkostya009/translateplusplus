@@ -159,8 +159,6 @@ public:
 
         if (auto fs = std::ifstream("config.json"); fs) {
             fs >> config;
-
-            dictionary = json::parse(std::ifstream(std::string(config["file"])));
         }
     }
 
@@ -376,7 +374,9 @@ public:
         try {
             dictionary = json::parse(std::ifstream(filePath));
             config["file"] = filePath;
-            config["dictionaries"] += filePath;
+            if (auto wstr = std::wstring(filePath); !config["dictionaries"].contains(std::string(wstr.begin(), wstr.end()))) {
+                config["dictionaries"] += filePath;
+            }
             char buffer[500];
             wcstombs(buffer, filePath, 500);
             addDictionaryOption({buffer});

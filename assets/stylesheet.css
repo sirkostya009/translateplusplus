@@ -616,16 +616,6 @@ video {
   width: 100vw;
 }
 
-.rotate-0 {
-  --tw-rotate: 0deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-90 {
-  --tw-rotate: 90deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .resize-none {
   resize: none;
 }
@@ -759,23 +749,6 @@ body {
   color: #ffffff;
 }
 
-.dropdown:focus-within .dropdown-menu {
-  scale: 1;
-  clip: rect(0, 0, 0, 0);
-  opacity:1;
-  transform: translate(0) scale(1);
-  visibility: visible;
-}
-
-.dropdown-menu {
-  scale: 0;
-  clip: rect(0, 0, 0, 0);
-}
-
-#dictionaries:focus + #arrow-icon {
-  transform: rotate(90deg);
-}
-
 .hover\:bg-\[\#2a2a2a\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(42 42 42 / var(--tw-bg-opacity));
@@ -784,11 +757,6 @@ body {
 .hover\:text-\[\#c9c4f8\]:hover {
   --tw-text-opacity: 1;
   color: rgb(201 196 248 / var(--tw-text-opacity));
-}
-
-.focus\:rotate-0:focus {
-  --tw-rotate: 0deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .focus\:outline-none:focus {
@@ -835,3 +803,4 @@ body {
     padding-right: 1.25rem;
   }
 }
+
