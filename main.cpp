@@ -291,7 +291,7 @@ public:
         }
 
         ul::JSEval(("result.value = `" + result + '`').c_str());
-        ul::JSEval(("resultCounter.innerText = " + std::to_string(result.length() - 1)).c_str());
+        ul::JSEval(("resultCounter.innerText = " + std::to_string(result.length() ? result.length() - 1 : result.length())).c_str());
         return {((ul::String) args[0]).utf8().length()};
     }
 
