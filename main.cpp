@@ -73,7 +73,7 @@ class Info : public ul::WindowListener, public ul::LoadListener, public ul::View
     std::function<void()> onClose;
 public:
     Info(ul::Monitor* monitor, std::function<void()> onClose)
-    : window{ ul::Window::Create(monitor, 450, 450, false, ul::kWindowFlags_Resizable | ul::kWindowFlags_Maximizable) }
+    : window{ ul::Window::Create(monitor, 850, 300, false, ul::kWindowFlags_Resizable | ul::kWindowFlags_Maximizable) }
     , overlay{ ul::Overlay::Create(window, 1, 1, 0, 0) }
     , onClose{ std::move(onClose) }
     {

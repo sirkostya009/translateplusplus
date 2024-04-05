@@ -954,3 +954,28 @@ body {
     padding-right: 1.25rem;
   }
 }
+
+.container {
+    padding: 1.5rem;
+    display: flex;
+}
+
+.container__image {
+    width: 13rem;
+    border: 1px solid black;
+    padding: 1rem;
+    margin-right: 2rem;
+}
+
+.pt-4 {
+    padding-top: 1rem
+}
+
+.button__close {
+    margin-top: 1rem;
+    color: white;
+    width: fit-content;
+    background: lightblue;
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+}
