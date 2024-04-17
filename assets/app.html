@@ -15,11 +15,12 @@
       Новий словник
     </button>
 
-    <div class="inline-flex items-center bg-[#222222] px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      <select id="dictionaries" onchange="loadDictionary(this.value)" class="appearance-none focus:outline-none"></select>
-      <svg id="arrow-icon" class="w-4 h-4 ml-2 mt-1 transition-all duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
-      </svg> 
+    <div class="inline-flex items-center relative bg-[#222222] px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
+        <select id="dictionaries" onchange="loadDictionary(this.value)" class="pointer bg-transparent w-20 focus:outline-none"></select>
+
+        <svg id="arrow-icon" class="absolute right-2 w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+        </svg>
     </div>
 
     <button onclick="openEditor()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
