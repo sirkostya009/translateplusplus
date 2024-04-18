@@ -6,34 +6,49 @@
 </head>
 
 <body class="bg-[#222222] h-screen w-screen flex flex-col items-center">
-  <h1 class="text-[#c9c4f8] text-3xl font-bold underline mb-5 mt-5">
-    Translator
-  </h1>
+  <div class="w-screen bg-[#000]">
+    <button id="fileButton" class="hover:bg-gray-900 px-1.5" onclick="fileDropdown.toggleAttribute('hidden')">Файл</button>
 
-  <div>
-    <button onclick="openNewDictionary()" class="px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      Новий словник
-    </button>
-
-    <div class="inline-flex items-center relative bg-[#222222] px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-        <select id="dictionaries" onchange="loadDictionary(this.value)" class="pointer bg-transparent w-20 focus:outline-none"></select>
-
-        <svg id="arrow-icon" class="absolute right-2 w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-        </svg>
+    <div id="fileDropdown" class="absolute bg-[#000] z-10 h-auto w-[140px]" hidden>
+      <button class="hover:bg-gray-900 px-1.5 w-full" onclick="openEditor()">Відкрити</button> 
+      <button class="hover:bg-gray-900 px-1.5 w-full" onclick="openNewDictionary()">Новий</button>
+      <button class="hover:bg-gray-900 px-1.5 w-full" onclick="translateFile()">Перекласти файл</button>
     </div>
 
-    <button onclick="openEditor()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      Редагувати
+    <button id="infoButton" class="hover:bg-gray-900 px-1.5" onclick="openInfo()">Інформація</button>
+  </div>
+
+  <div class="w-screen space-x-1">
+    <button class="p-2 transition-colors duration-300 text-[#cdcdcd] hover:text-white" onclick="openNewDictionary()">
+      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" fill="currentColor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z" fill="currentColor" />
+      </svg>
     </button>
 
-    <button onclick="translateFile()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      Перекласти файл
+    <button class="p-2 transition-colors duration-300 text-[#cdcdcd] hover:text-white" onclick="openEditor()">
+      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+        <path d="M262.29 192.31a64 64 0 1057.4 57.4 64.13 64.13 0 00-57.4-57.4zM416.39 256a154.34 154.34 0 01-1.53 20.79l45.21 35.46a10.81 10.81 0 012.45 13.75l-42.77 74a10.81 10.81 0 01-13.14 4.59l-44.9-18.08a16.11 16.11 0 00-15.17 1.75A164.48 164.48 0 01325 400.8a15.94 15.94 0 00-8.82 12.14l-6.73 47.89a11.08 11.08 0 01-10.68 9.17h-85.54a11.11 11.11 0 01-10.69-8.87l-6.72-47.82a16.07 16.07 0 00-9-12.22 155.3 155.3 0 01-21.46-12.57 16 16 0 00-15.11-1.71l-44.89 18.07a10.81 10.81 0 01-13.14-4.58l-42.77-74a10.8 10.8 0 012.45-13.75l38.21-30a16.05 16.05 0 006-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16 16 0 00-6.07-13.94l-38.19-30A10.81 10.81 0 0149.48 186l42.77-74a10.81 10.81 0 0113.14-4.59l44.9 18.08a16.11 16.11 0 0015.17-1.75A164.48 164.48 0 01187 111.2a15.94 15.94 0 008.82-12.14l6.73-47.89A11.08 11.08 0 01213.23 42h85.54a11.11 11.11 0 0110.69 8.87l6.72 47.82a16.07 16.07 0 009 12.22 155.3 155.3 0 0121.46 12.57 16 16 0 0015.11 1.71l44.89-18.07a10.81 10.81 0 0113.14 4.58l42.77 74a10.8 10.8 0 01-2.45 13.75l-38.21 30a16.05 16.05 0 00-6.05 14.08c.33 4.14.55 8.3.55 12.47z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+      </svg>
     </button>
 
-    <button onclick="openInfo()" class="ml-2 px-4 pb-1 hover:text-[#c9c4f8] transition-colors duration-300">
-      Про застосунок
+    <button class="p-2 transition-colors duration-300 fill-[#cdcdcd] hover:fill-white" onclick="translateFile()">
+      <svg width="24" height="24" version="1.0" id="katman_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" style="enable-background:new 0 0 600 450;" xml:space="preserve" viewBox="183.4 106.5 233.42 237.63">
+        <g id="_x31_" transform="translate(-1066.000000, -38.000000)">
+          <path id="Fill-1" class="st0" d="M1420.7,284.1c-5-6.7-8.3-12.7-10.3-17.1h20.6C1429,271.4,1425.8,277.3,1420.7,284.1    L1420.7,284.1z M1448.6,251.6h-20.1v-7.2c0-4.2-3.4-7.7-7.7-7.7c-4.2,0-7.7,3.4-7.7,7.7v7.2h-20.1c-4.2,0-7.7,3.4-7.7,7.7    c0,4.2,3.4,7.7,7.7,7.7h1c2,5.7,6.6,16.5,16.6,29c-4.2,4.2-9.1,8.5-14.9,12.7c-3.4,2.5-4.2,7.3-1.7,10.8c1.5,2.1,3.8,3.1,6.2,3.1    c1.6,0,3.2-0.5,4.5-1.5c6.2-4.5,11.5-9.2,16.1-13.7c4.6,4.6,9.9,9.2,16.1,13.7c1.4,1,3,1.5,4.5,1.5c2.4,0,4.7-1.1,6.2-3.1    c2.5-3.4,1.8-8.2-1.7-10.8c-5.8-4.2-10.7-8.5-14.9-12.7c9.9-12.5,14.6-23.4,16.6-29h1c4.2,0,7.7-3.4,7.7-7.7    C1456.3,255,1452.8,251.6,1448.6,251.6L1448.6,251.6z M1467.5,353.6c0,7.3-5.9,13.2-13.2,13.2h-94.1c-0.9,0-1.8-0.3-2.7-0.5    l25.1-33.5c0.4-0.5,0.5-1.1,0.8-1.6c0.2-0.3,0.4-0.6,0.5-1c0.3-1,0.4-2.1,0.2-3.1v0L1365.1,198h89.1c7.3,0,13.2,5.9,13.2,13.2    V353.6z M1361,335.9l-14.1,18.8l-2.1-18.8H1361z M1264.8,307.3V173.2c0-7.3,5.9-13.2,13.2-13.2h54.6c6.5,0,12.2,4.9,13.1,11.3    l21.8,149.3H1278C1270.7,320.5,1264.8,314.6,1264.8,307.3L1264.8,307.3z M1454.3,182.6h-91.4l-2-13.6c-2-13.9-14.2-24.5-28.3-24.5    H1278c-15.8,0-28.6,12.8-28.6,28.6v134.1c0,15.8,12.8,28.6,28.6,28.6h51.4l2.3,20.9c1.6,14.5,13.8,25.4,28.4,25.4h94.1    c15.8,0,28.6-12.8,28.6-28.6V211.2C1482.9,195.5,1470,182.6,1454.3,182.6L1454.3,182.6z M1301.7,245.9l5.5-28.5    c0.5-2.3,4.4-2.3,4.8,0l5.5,28.5H1301.7z M1309.6,200c-8.5,0-15.9,6.1-17.5,14.5l-11.7,60.8c-0.8,4.2,1.9,8.2,6.1,9    c4.1,0.8,8.2-1.9,9-6.1l3.3-16.9h21.8l3.3,16.9c0.7,3.7,3.9,6.2,7.5,6.2c0.5,0,1,0,1.5-0.1c4.2-0.8,6.9-4.9,6.1-9l-11.7-60.8    C1325.5,206.1,1318.1,200,1309.6,200L1309.6,200z"/>
+        </g>
+      </svg>
     </button>
+
+    <button class="p-2 transition-colors duration-300 text-[#cdcdcd] hover:text-white" onclick="openInfo()">
+      <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 10.9794C11 10.4271 11.4477 9.97937 12 9.97937C12.5523 9.97937 13 10.4271 13 10.9794V16.9794C13 17.5317 12.5523 17.9794 12 17.9794C11.4477 17.9794 11 17.5317 11 16.9794V10.9794Z" fill="currentColor" />
+        <path d="M12 6.05115C11.4477 6.05115 11 6.49886 11 7.05115C11 7.60343 11.4477 8.05115 12 8.05115C12.5523 8.05115 13 7.60343 13 7.05115C13 6.49886 12.5523 6.05115 12 6.05115Z" fill="currentColor" />
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12Z" fill="currentColor" />
+      </svg>
+    </button>
+
+    <select id="dictionaries" onchange="loadDictionary(this.value)" class="absolute pointer bg-transparent w-20 focus:outline-none"></select>
   </div>
 
   <div class="relative grid grid-cols-2 grid-rows-1 w-[1200px] h-[200px] font-sans mt-5 half:grid-cols-1 half:grid-rows-2 half:w-screen half:px-5 game">
@@ -42,15 +57,15 @@
               onkeyup="inputCounter.innerText = process(this.value)"
               onkeydown="inputCounter.innerText = this.value.length"></textarea>
 
-    <span id="input-counter" class="character-counter -translate-x-[615px] bottom-2 font-semibold select-none half:bottom-[108px] half:-translate-x-[30px] "></span>
+    <span id="inputCounter" class="character-counter -translate-x-[615px] bottom-2 font-semibold select-none half:bottom-[108px] half:-translate-x-[30px] "></span>
 
     <textarea id="result"
               class="bg-[#5a5a5a] p-4 text-xl rounded-r-xl resize-none focus:outline-none half:rounded-lg half:rounded-t-none text-white"
               disabled></textarea>
 
-    <span id="result-counter" class="character-counter -translate-x-[16px] bottom-2 font-semibold select-none half:-translate-x-[30px]"></span>
+    <span id="resultCounter" class="character-counter -translate-x-[16px] bottom-2 font-semibold select-none half:-translate-x-[30px]"></span>
 
-    <button class="absolute top-2 right-2 p-2 hover:bg-[#3a3a3a] rounded-lg half:top-28 half:right-7" onclick="copy(result.value)">
+    <button class="absolute top-2 right-2 p-2 hover:bg-[#3a3a3a] rounded-lg half:top-28 half:right-7 transition-colors duration-300" onclick="copy(result.value)">
       <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="9.37 9.37 486.63 486.63">
         <rect x="128" y="128" width="336" height="336" rx="57" ry="57" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" />
         <path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -60,10 +75,7 @@
 </body>
 
 <script>
-  const result = document.getElementById('result');
-  const dictionaries = document.getElementById('dictionaries');
-  const inputCounter = document.getElementById('input-counter');
-  const resultCounter = document.getElementById('result-counter');
+  addEventListener('click', (e) => e.target.id !== 'fileButton' && fileDropdown.setAttribute('hidden', ''));
 
   function addDictionaryOption(name) {
     const option = document.createElement('option');
