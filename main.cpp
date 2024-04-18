@@ -87,6 +87,10 @@ public:
         overlay->Focus();
     }
 
+    void OnResize(ul::Window *window, uint32_t width_px, uint32_t height_px) override {
+        overlay->Resize(width_px, height_px);
+    }
+
     void OnClose(ul::Window *w) override {
         w->Close();
         onClose();
