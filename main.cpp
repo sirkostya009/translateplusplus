@@ -8,6 +8,7 @@
 #include <windows.h>
 #include <shobjidl.h>
 #include <fstream>
+#include "AssetsProvider.h"
 
 namespace ul = ultralight;
 
@@ -21,7 +22,7 @@ class Editor : public ul::WindowListener, public ul::LoadListener, public ul::Vi
 
     std::string filename;
 public:
-    Editor(ul::Monitor* monitor, std::function<void()> onClose, std::string title = "Editor")
+    Editor(ul::Monitor* monitor, std::function<void()> onClose, std::string title)
     : window{ ul::Window::Create(monitor, 800, 600, false, ul::kWindowFlags_Resizable | ul::kWindowFlags_Maximizable) }
     , overlay{ ul::Overlay::Create(window, 1, 1, 0, 0) }
     , onClose{ std::move(onClose) }
@@ -33,15 +34,20 @@ public:
 
         window->MoveToCenter();
         overlay->Resize(window->width(), window->height());
-        overlay->view()->LoadURL("file:///editor.html");
+#include "resources/editor.inl"
+        overlay->view()->LoadHTML(rawData);
         overlay->Focus();
         window->SetTitle(filename.c_str());
     }
 
     void OnClose(ultralight::Window *w) override {
         w->Close();
-        std::ofstream(filename) << ((ul::String) overlay->view()->EvaluateScript("textarea.value")).utf8().data();
+        std::ofstream(filename) << ((ul::String) overlay->view()->EvaluateScript("dict.value")).utf8().data();
         onClose();
+    }
+
+    void OnResize(ultralight::Window *, uint32_t width_px, uint32_t height_px) override {
+        overlay->Resize(width_px, height_px);
     }
 
     bool OnKeyEvent(const ultralight::KeyEvent &evt) override {
@@ -56,7 +62,7 @@ public:
     void OnDOMReady(ultralight::View *caller, uint64_t frame_id, bool is_main_frame, const ultralight::String &url) override {
         auto fs = std::ifstream(filename);
         auto ss = std::stringstream();
-        ss << "textarea.value = `";
+        ss << "dict.value = `";
         for (auto buf = std::string(); std::getline(fs, buf);) {
             ss << buf << '\n';
         }
@@ -83,8 +89,13 @@ public:
 
         window->MoveToCenter();
         overlay->Resize(window->width(), window->height());
-        overlay->view()->LoadURL("file:///info.html");
+#include "resources/info.inl"
+        overlay->view()->LoadHTML(rawData);
         overlay->Focus();
+    }
+
+    void OnChangeTitle(ultralight::View *caller, const ultralight::String &title) override {
+        window->SetTitle(title.utf8().data());
     }
 
     void OnResize(ul::Window *window, uint32_t width_px, uint32_t height_px) override {
@@ -155,7 +166,8 @@ public:
 
         window->MoveToCenter();
         overlay->Resize(window->width(), window->height());
-        overlay->view()->LoadURL("file:///app.html");
+#include "resources/app.inl"
+        overlay->view()->LoadHTML(rawData);
         overlay->Focus();
 
         if (auto fs = std::ifstream("config.json"); fs) {
@@ -169,7 +181,11 @@ public:
 
     void OnUpdate() override {
         if (rizz) {
-            dictionary = json::parse(std::ifstream(std::string(config["file"])));
+            try {
+                dictionary = json::parse(std::ifstream(std::string(config["file"])));
+            } catch (const std::exception& e) {
+                std::cerr << "Failed to load dictionary\n" << e.what() << std::endl;
+            }
             rizz = false;
             delete editor;
         }
@@ -216,6 +232,7 @@ public:
         global["openInfo"]          = BindJSCallback(&App::openInfo);
         global["process"]           = BindJSCallbackWithRetval(&App::process);
         global["copy"]              = BindJSCallback(&App::copy);
+        global["nuke"]              = JSCallback([this](const ul::JSObject&, const ul::JSArgs&) { OnClose(window.get()); });
 
         addDictionaryOption = global["addDictionaryOption"];
         for (auto& file : config["dictionaries"]) {
@@ -395,6 +412,8 @@ public:
 };
 
 auto main() -> int {
+//    ul::Platform::instance().set_file_system(new AssetsProvider);
+
     CoInitialize(nullptr);
 
     App().run();
